@@ -21,9 +21,9 @@ else ()
     set(_gmp_build_tgt "")
     if (APPLE)
         set(_gmp_ccflags "${_gmp_ccflags} -mmacosx-version-min=${DEP_OSX_TARGET}")
-        set(_gmp_build_tgt "--build=x86_64-apple-darwin")
+        set(_gmp_build_tgt "--build=${CMAKE_SYSTEM_PROCESSOR}-apple-darwin")
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        set(_gmp_build_tgt "--build=x86_64-pc-linux-gnu")
+        set(_gmp_build_tgt "--build=${CMAKE_SYSTEM_PROCESSOR}-pc-linux-gnu")
     endif ()
 
     ExternalProject_Add(dep_GMP
