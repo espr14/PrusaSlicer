@@ -17,10 +17,8 @@ if (MSVC)
     add_custom_target(dep_GMP SOURCES ${_output})
 
 else ()
-    set(_gmp_ccflags "-O3 -DNDEBUG -fPIC -DPIC -Wall -Wmissing-prototypes -Wpointer-arith -pedantic -fomit-frame-pointer -fno-common")
     set(_gmp_build_tgt "")
     if (APPLE)
-        set(_gmp_ccflags "${_gmp_ccflags} -mmacosx-version-min=${DEP_OSX_TARGET}")
         set(_gmp_build_tgt "--build=${CMAKE_SYSTEM_PROCESSOR}-apple-darwin")
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         set(_gmp_build_tgt "--build=${CMAKE_SYSTEM_PROCESSOR}-pc-linux-gnu")
@@ -30,7 +28,7 @@ else ()
         # URL  https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
         URL https://gmplib.org/download/gmp/gmp-6.2.0.tar.lz
         BUILD_IN_SOURCE ON 
-        CONFIGURE_COMMAND env "CFLAGS=${_gmp_ccflags}" "CXXFLAGS=${_gmp_ccflags}" ./configure --enable-shared=no --enable-cxx=yes --enable-static=yes "--prefix=${DESTDIR}/usr/local" ${_gmp_build_tgt}
+        CONFIGURE_COMMAND ./configure --enable-shared=no --enable-cxx=yes --enable-static=yes "--prefix=${DESTDIR}/usr/local" ${_gmp_build_tgt}
         BUILD_COMMAND     make -j
         INSTALL_COMMAND   make install
     )
