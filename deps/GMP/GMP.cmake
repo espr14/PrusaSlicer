@@ -18,17 +18,20 @@ if (MSVC)
 
 else ()
     set(_gmp_ccflags "-O2 -DNDEBUG -fPIC -DPIC -Wall -Wmissing-prototypes -Wpointer-arith -pedantic -fomit-frame-pointer -fno-common")
-    set(_gmp_build_tgt "")
+    set(_gmp_build_tgt "${CMAKE_SYSTEM_PROCESSOR}")
     if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
-        string(REPLACE "(armv[0-9])*" "\\1" _cpu_arch ${CMAKE_SYSTEM_PROCESSOR})
-        set(_gmp_ccflags "${_gmp_ccflags} -march=${_cpu_arch}")
-    endif ()
+        set(_gmp_ccflags "${_gmp_ccflags} -march=armv6") # Go back to Raspberry Pi 1
+        set(_gmp_build_tgt armv6)
+    endif()
+
     if (APPLE)
         set(_gmp_ccflags "${_gmp_ccflags} -mmacosx-version-min=${DEP_OSX_TARGET}")
-        set(_gmp_build_tgt "--build=${CMAKE_SYSTEM_PROCESSOR}-apple-darwin")
+        set(_gmp_build_tgt "--build=${_gmp_build_tgt}-apple-darwin")
     elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        set(_gmp_build_tgt "--build=${CMAKE_SYSTEM_PROCESSOR}-pc-linux-gnu")
-    endif ()
+        set(_gmp_build_tgt "--build=${_gmp_build_tgt}-pc-linux-gnu")
+    else ()
+        set(_gmp_build_tgt "") # let it guess
+    endif()
 
     ExternalProject_Add(dep_GMP
         # URL  https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
