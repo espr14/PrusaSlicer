@@ -20,8 +20,8 @@ else ()
     set(_gmp_ccflags "-O2 -DNDEBUG -fPIC -DPIC -Wall -Wmissing-prototypes -Wpointer-arith -pedantic -fomit-frame-pointer -fno-common")
     set(_gmp_build_tgt "${CMAKE_SYSTEM_PROCESSOR}")
     if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm")
-        set(_gmp_ccflags "${_gmp_ccflags} -march=armv6") # Go back to Raspberry Pi 1
-        set(_gmp_build_tgt armv6)
+        set(_gmp_ccflags "${_gmp_ccflags} -march=armv7-a") # Works on RPi-4
+        set(_gmp_build_tgt armv7)
     endif()
 
     if (APPLE)
